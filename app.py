@@ -116,7 +116,7 @@ def calculate():
             # В случае ошибки просто очищаем формулу
             game_state['current_formula'] = ''
     
-    return render_template('partials/score_display.html',
+    return render_template('index.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
                          current_formula=game_state['current_formula'],
