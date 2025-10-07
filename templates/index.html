@@ -15,14 +15,14 @@
 
 <div class="players-panel">
     <button class="player-btn" 
-            hx-post="/toggle_player" 
+            hx-post="/carcassone-buddy/toggle_player" 
             hx-vals='{"player": "Люба"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">
         Люба
     </button>
     <button class="player-btn" 
-            hx-post="/toggle_player" 
+            hx-post="/carcassone-buddy/toggle_player" 
             hx-vals='{"player": "Вова"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">
@@ -34,82 +34,82 @@
 <div class="keypad">
     <!-- Первая строка -->
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "1"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">1</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "2"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">2</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "3"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">3</button>
     <button class="key-btn operator" 
-            hx-post="/input_operator" 
+            hx-post="/carcassone-buddy/input_operator" 
             hx-vals='{"operator": "+"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">+</button>
 
     <!-- Вторая строка -->
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "4"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">4</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "5"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">5</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "6"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">6</button>
     <button class="key-btn operator" 
-            hx-post="/input_operator" 
+            hx-post="/carcassone-buddy/input_operator" 
             hx-vals='{"operator": "-"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">-</button>
 
     <!-- Третья строка -->
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "7"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">7</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "8"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">8</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "9"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">9</button>
     <button class="key-btn enter" 
-            hx-post="/calculate" 
+            hx-post="/carcassone-buddy/calculate" 
             hx-target="body" 
             hx-swap="outerHTML">Enter</button>
 
     <!-- Четвертая строка -->
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "10"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">10</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "20"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">20</button>
     <button class="key-btn number" 
-            hx-post="/input_number" 
+            hx-post="/carcassone-buddy/input_number" 
             hx-vals='{"number": "30"}' 
             hx-target="#score-display" 
             hx-swap="innerHTML">30</button>

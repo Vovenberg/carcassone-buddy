@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
+BASE_URL = "/carcassone-buddy"
+
 # Состояние игры (в реальном приложении лучше использовать сессию или базу данных)
 game_state = {
     'players': {
@@ -16,7 +18,7 @@ game_state = {
 }
 
 
-@app.route('/')
+@app.route(f'{BASE_URL}/')
 def index():
     # "\"Главная страница с калькулятором\"\"\"
     return render_template('index.html',
@@ -26,7 +28,7 @@ def index():
                          history=game_state['history']
                          )
 
-@app.route('/toggle_player', methods=['POST'])
+@app.route(f'{BASE_URL}/toggle_player', methods=['POST'])
 def toggle_player():
     # \"\"\"Переключение активного игрока\"\"\"
     player = request.form.get('player')
@@ -42,7 +44,7 @@ def toggle_player():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route('/input_number', methods=['POST'])
+@app.route(f'{BASE_URL}/input_number', methods=['POST'])
 def input_number():
     # \"\"\"Обработка ввода числа\"\"\"
     number = request.form.get('number')
@@ -58,7 +60,7 @@ def input_number():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route('/input_operator', methods=['POST'])
+@app.route(f'{BASE_URL}/input_operator', methods=['POST'])
 def input_operator():
     # \"\"\"Обработка ввода операции (+/-)\"\"\"
     operator = request.form.get('operator')
@@ -71,7 +73,7 @@ def input_operator():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route('/calculate', methods=['POST'])
+@app.route(f'{BASE_URL}/calculate', methods=['POST'])
 def calculate():
     # \"\"\"Вычисление результата и обновление счета\"\"\"
     if game_state['current_formula'] and game_state['active_player']:
