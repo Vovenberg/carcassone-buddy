@@ -4,14 +4,11 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 BASE_URL = "/carcassone-buddy"
+DEFAULT_PLAYERS = ['Люба', 'Вова']
 
-# Состояние игры (в реальном приложении лучше использовать сессию или базу данных)
 game_state = {
-    'players': {
-        'Люба': {'score': 0, },
-        'Вова': {'score': 0, }
-    },
-    'active_player': 'Люба',
+    'players': {},
+    'active_player': DEFAULT_PLAYERS[0],
     'current_formula': '',
     'current_operation': '',
     'history': []
@@ -124,5 +121,19 @@ def calculate():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
+@app.route(f'{BASE_URL}/clear', methods=['POST'])
+def clear():
+    game_state['active_player'] = 'Люба'
+    for player in game_state['players']:
+        game_state['players'][player]['score'] = 0
+
+
+def initPlayers(players):
+    game_state['active_player'] = players[0]
+    for player in players:
+        game_state['players'][player] = {'score': 0 }
+    print(game_state)
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5050)
+    initPlayers(DEFAULT_PLAYERS)
+    app.run(debug=True, host='0.0.0.0', port=5151)

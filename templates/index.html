@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Заголовок -->
 <header class="app-header">
-    <h1>Каркассон калькулятор</h1>
+    <h1>Carcassone Buddy</h1>
 </header>
 
 <!-- Панель счетчика очков -->
@@ -14,20 +14,15 @@
 </div>
 
 <div class="players-panel">
-    <button class="player-btn" 
-            hx-post="/carcassone-buddy/toggle_player" 
-            hx-vals='{"player": "Люба"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">
-        Люба
-    </button>
-    <button class="player-btn" 
-            hx-post="/carcassone-buddy/toggle_player" 
-            hx-vals='{"player": "Вова"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">
-        Вова
-    </button>
+        {% for player in players %}
+                <button class="player-btn" 
+                        hx-post="/carcassone-buddy/toggle_player" 
+                        hx-vals='{"player": "{{player}}"}' 
+                        hx-target="#score-display" 
+                        hx-swap="innerHTML">
+                        {{player}}
+                </button>
+        {% endfor %}
 </div>
 
 <!-- Цифровая клавиатура -->

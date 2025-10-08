@@ -1,20 +1,10 @@
 <!-- Отображение текущих очков -->
-<div class="player-score">
-    <span class="player-name {% if active_player == 'Люба'%}active-player{% endif %}">Люба:</span> 
-    <span class="score">{{ players.Люба.score }}</span>
-    {% if active_player == 'Люба' and current_formula %}
-        <span class="operation">({{ current_formula }})</span>
-    {% endif %}
-</div>
-
-<div class="player-score">
-    <span class="player-name {% if active_player == 'Вова'%}active-player{% endif %}">Вова:</span> 
-    <span class="score">{{ players.Вова.score }}</span>
-    {% if 'current_operation' in players.Вова %}
-        <span class="operation">({{ players.Вова.current_operation }})</span>
-    {% endif %}
-    {% if active_player == 'Вова' and current_formula %}
-        <span class="operation">({{ current_formula }})</span>
-    {% endif %}
-</div>
-
+{% for player, value in players.items() %}
+    <div class="player-score">
+        <span class="player-name {% if active_player == player%}active-player{% endif %}">{{player}}:</span> 
+        <span class="score">{{ value.score }} </span>
+        {% if active_player == player and current_formula %}
+            <span class="operation">({{ current_formula }})</span>
+        {% endif %}
+    </div>
+{% endfor %}
