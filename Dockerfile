@@ -21,4 +21,4 @@ USER appuser
 EXPOSE 5000
 
 # Команда запуска с Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "2", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "1", "app:app"]
