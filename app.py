@@ -8,7 +8,7 @@ DEFAULT_PLAYERS = ['Люба', 'Вова']
 
 game_state = {
     'players': {},
-    'active_player': DEFAULT_PLAYERS[0],
+    'active_player': '',
     'current_formula': '',
     'current_operation': '',
     'history': []
@@ -121,11 +121,18 @@ def calculate():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route(f'{BASE_URL}/clear', methods=['POST'])
+@app.route(f'{BASE_URL}/clear', methods=['GET'])
 def clear():
-    game_state['active_player'] = 'Люба'
+    game_state['active_player'] = next(iter(game_state['players']))
+    game_state['history'] = []
     for player in game_state['players']:
         game_state['players'][player]['score'] = 0
+    return render_template('index.html',
+                        players=game_state['players'],
+                        active_player=game_state['active_player'],
+                        current_formula=game_state['current_formula'],
+                        history=game_state['history']
+                        )
 
 
 def initPlayers(players):
