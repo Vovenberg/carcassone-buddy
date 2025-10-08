@@ -141,6 +141,8 @@ def initPlayers(players):
         game_state['players'][player] = {'score': 0 }
     print(game_state)
 
+
+initPlayers(DEFAULT_PLAYERS)
+
 if __name__ == '__main__':
-    initPlayers(DEFAULT_PLAYERS)
     app.run(debug=True, host='0.0.0.0', port=5151)
