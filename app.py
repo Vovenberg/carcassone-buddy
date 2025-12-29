@@ -144,4 +144,4 @@ def initPlayers(players):
 initPlayers(DEFAULT_PLAYERS)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5151)
+    app.run(debug=True, host='0.0.0.0', port=5000)
