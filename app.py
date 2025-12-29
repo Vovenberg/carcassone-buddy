@@ -15,6 +15,7 @@ game_state = {
 }
 
 
+@app.route(f'{BASE_URL}', methods=['GET'])
 def index():
     # "\"Главная страница с калькулятором\"\"\"
     return render_template('index.html',
