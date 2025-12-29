@@ -1,17 +1,26 @@
-FROM python:3.9-slim-buster
+FROM python:3.13
 
+# Копируем uv из официального образа
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Создание рабочей директории
 WORKDIR /app
 
-# Копирование файла зависимостей
-COPY requirements.txt .
+# Копируем файлы зависимостей для кэширования слоя
+COPY pyproject.toml uv.lock ./
 
-# Установка Python зависимостей
-RUN pip install --no-cache-dir -r requirements.txt
+# Устанавливаем зависимости (без проекта для лучшего кэширования)
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_NO_DEV=1
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project --no-dev
 
 # Копирование приложения
 COPY . .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
+
+# Устанавливаем PATH **ДО** переключения пользователя
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Создание пользователя для безопасности
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
