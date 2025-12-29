@@ -14,34 +14,16 @@ carcassonne-calculator/
 │       └── score_display.html      # Частичный шаблон счетчика
 ├── static/
 │   └── style.css                   # CSS стили (опционально)
-└── requirements.txt                # Зависимости
+└── pyproject.toml                # Зависимости
 ```
 
 ## Установка и запуск
 
-### 1. Создание виртуального окружения
-
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# или
-venv\Scripts\activate     # Windows
+uv run app.py
 ```
 
-### 2. Установка зависимостей
-
-```bash
-pip install flask
-```
-
-
-### 7. Запуск приложения
-
-```bash
-python app.py
-```
-
-Откройте браузер и перейдите на `http://127.0.0.1:5000`
+Откройте браузер и перейдите на `http://127.0.0.1:5151`
 
 ## Ключевые особенности
 

@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -15,7 +15,6 @@ game_state = {
 }
 
 
-@app.route(f'{BASE_URL}/')
 def index():
     # "\"Главная страница с калькулятором\"\"\"
     return render_template('index.html',
@@ -33,7 +32,7 @@ def toggle_player():
         game_state['active_player'] = player
         game_state['current_formula'] = ''
         game_state['current_operation'] = ''
-    
+
     # Возвращаем обновленную панель счетчика
     return render_template('partials/score_display.html',
                          players=game_state['players'],
@@ -50,7 +49,7 @@ def input_number():
             game_state['current_formula'] = "+" + number
         else:
             game_state['current_formula'] += number
-    
+
     return render_template('partials/score_display.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
@@ -63,7 +62,7 @@ def input_operator():
     operator = request.form.get('operator')
     if operator: ##and game_state['current_formula']:
         game_state['current_formula'] += operator
-    
+
     return render_template('partials/score_display.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
@@ -77,22 +76,22 @@ def calculate():
         try:
             # Безопасное вычисление только для простых математических операций
             formula = game_state['current_formula']
-            
+
             # Проверяем, что формула содержит только числа и операторы +/-
             allowed_chars = set('0123456789+-')
             if all(c in allowed_chars for c in formula):
                 result = eval(formula)  # В реальном приложении лучше использовать более безопасный способ
-                
+
                 player = game_state['active_player']
                 old_score = game_state['players'][player]['score']
                 new_score = old_score + result
-                
+
                 if new_score < 0:
                     raise Exception('Новое значение меньше 0')
-                
+
                 # Обновляем счет
                 game_state['players'][player]['score'] = new_score
-                
+
                 # Сохраняем историю
                 history = { "player": player,
                            "old_score": old_score,
@@ -100,21 +99,21 @@ def calculate():
                            "new_score": new_score
                         }
                 game_state['history'].append(history)
-                
+
                 # Очищаем текущую операцию
                 game_state['current_formula'] = ''
                 game_state['current_operation'] = ''
-                
+
                 # Убираем current_operation если был
                 if 'current_operation' in game_state['players'][player]:
                     del game_state['players'][player]['current_operation']
-                
+
                 print(game_state)
-            
+
         except:
             # В случае ошибки просто очищаем формулу
             game_state['current_formula'] = ''
-    
+
     return render_template('index.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
