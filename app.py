@@ -1,4 +1,6 @@
-import time, datetime
+import datetime
+import time
+from zoneinfo import ZoneInfo
 
 from flask import Flask, render_template, request
 from tinydb import TinyDB
@@ -169,7 +171,9 @@ def persist():
 
 def get_all():
     return map(lambda x: {
-        'start_date': datetime.datetime.fromtimestamp(x['start_date']).strftime('%Y-%m-%d %H:%M'),
+        'start_date': datetime.datetime.fromtimestamp(x['start_date'])
+        .astimezone(ZoneInfo("Europe/Samara"))
+        .strftime('%Y-%m-%d %H:%M'),
         'players': x['players']
     }, db.all())
 
