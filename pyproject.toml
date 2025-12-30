@@ -4,6 +4,7 @@ version = "0.0.1"
 dependencies = [
     "flask==2.3.2",
     "gunicorn==21.2.0",
+    "tinydb>=4.8.2",
 ]
 
 [tool.uv]

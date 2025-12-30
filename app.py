@@ -1,27 +1,36 @@
-
+import time, datetime
 
 from flask import Flask, render_template, request
+from tinydb import TinyDB
 
 app = Flask(__name__)
 
 BASE_URL = "/carcassone-buddy"
 
-game_state = {
-    'players': {},
-    'active_player': '',
-    'current_formula': '',
-    'current_operation': '',
-    'history': []
-}
+def create_game_state():
+    return {
+        'start_date': time.time(),
+        'end_date': None,
+        'players': {},
+        'active_player': '',
+        'current_formula': '',
+        'current_operation': '',
+        'history': []
+    }
+
+game_state = {}
+db = TinyDB('db.json')
 
 
 @app.route(f'{BASE_URL}', methods=['GET'])
 def index():
+    empty_state = create_game_state()
     return render_template('index.html',
-                         players=game_state['players'],
-                         active_player=game_state['active_player'],
-                         current_formula=game_state['current_formula'],
-                         history=game_state['history']
+                         players=empty_state['players'],
+                         active_player=empty_state['active_player'],
+                         current_formula=empty_state['current_formula'],
+                         history=empty_state['history'],
+                         game_history=get_all()
                          )
 
 @app.route(f'{BASE_URL}/start', methods=['POST'])
@@ -30,8 +39,13 @@ def start():
     if players_str is None:
         return 'Players not provided', 400
     players = [player.strip() for player in players_str.split(sep=',')]
-    print(f'init players = {players}')
-    initPlayers(players)
+
+    global game_state
+    game_state = create_game_state()
+    game_state['active_player'] = players[0]
+    for player in players:
+        game_state['players'][player] = {'score': 0 }
+    print(game_state)
     return render_template('index.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
@@ -134,30 +148,30 @@ def calculate():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route(f'{BASE_URL}/clear', methods=['POST'])
-def clear():
-    game_state = {
-        'players': {},
-        'active_player': '',
-        'current_formula': '',
-        'current_operation': '',
-        'history': []
-    }
-    print(game_state)
+game_state = {}
+
+@app.route(f'{BASE_URL}/end', methods=['POST'])
+def end():
+    game_state['end_date'] = time.time()
+    persist()
+    game_state.clear()
+    empty_state = create_game_state()
     return render_template('index.html',
-                        players=game_state['players'],
-                        active_player=game_state['active_player'],
-                        current_formula=game_state['current_formula'],
-                        history=game_state['history']
-                        )
+                         players=empty_state['players'],
+                         active_player=empty_state['active_player'],
+                         current_formula=empty_state['current_formula'],
+                         history=empty_state['history'],
+                         game_history=get_all()
+                         )
 
+def persist():
+    db.insert(game_state)
 
-def initPlayers(players):
-    game_state['active_player'] = players[0]
-    for player in players:
-        game_state['players'][player] = {'score': 0 }
-    game_state['history'] = []
-    print(game_state)
+def get_all():
+    return map(lambda x: {
+        'start_date': datetime.datetime.fromtimestamp(x['start_date']).strftime('%Y-%m-%d %H:%M'),
+        'players': x['players']
+    }, db.all())
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

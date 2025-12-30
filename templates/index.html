@@ -6,19 +6,23 @@
 
 <!-- Панель старта игры -->
 {% if not active_player %}
-<div class="card">
+<div class="card game-start-card">
+    <label for="start-config-players-input" class="card-label"
+        >👥 Участники</label
+    >
     <textarea
         id="start-config-players-input"
         name="players"
         rows="6"
         cols="40"
+        class="players-input"
         placeholder
     >
 Вова,Люба</textarea
     >
 
     <button
-        class="key-btn enter"
+        class="key-btn start-btn"
         hx-post="/carcassone-buddy/start"
         hx-include="#start-config-players-input"
         hx-target="body"
@@ -27,8 +31,7 @@
         🎮 Старт
     </button>
 </div>
-{% endif %}
-
+{% endif %} {% if active_player %}
 <!-- Панель счетчика очков -->
 <div class="score-panel card">
     <div id="score-display">{% include 'partials/score_display.html' %}</div>
@@ -207,11 +210,21 @@
     </ul>
     {% endif %}
 </div>
-
-{% if active_player %}
+{% endif %} {% if not active_player %}
+<div class="history">
+    <strong>История игр:</strong>
+    {% if game_history %}
+    <ul>
+        {% for item in game_history|reverse() %}
+        <li>{{ item.start_date }}: {{item.players}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endif %} {% if active_player %}
 <button
-    class="key-btn operator"
-    hx-post="/carcassone-buddy/clear"
+    class="key-btn end-btn"
+    hx-post="/carcassone-buddy/end"
     hx-target="body"
     hx-swap="outerHTML"
 >
