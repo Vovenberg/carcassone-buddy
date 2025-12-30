@@ -1,124 +1,220 @@
-{% extends "/base.html" %}
-
-{% block content %}
+{% extends "/base.html" %} {% block content %}
 <!-- Заголовок -->
 <header class="app-header">
     <h1>Carcassone Buddy</h1>
 </header>
 
+<!-- Панель старта игры -->
+{% if not active_player %}
+<div class="card">
+    <textarea
+        id="start-config-players-input"
+        name="players"
+        rows="6"
+        cols="40"
+        placeholder
+    >
+Вова,Люба</textarea
+    >
+
+    <button
+        class="key-btn enter"
+        hx-post="/carcassone-buddy/start"
+        hx-include="#start-config-players-input"
+        hx-target="body"
+        hx-swap="outerHTML"
+    >
+        🎮 Старт
+    </button>
+</div>
+{% endif %}
+
 <!-- Панель счетчика очков -->
 <div class="score-panel card">
-    <div id="score-display">
-        {% include 'partials/score_display.html' %}
-    </div>
+    <div id="score-display">{% include 'partials/score_display.html' %}</div>
 </div>
 
 <div class="players-panel">
-        {% for player in players %}
-                <button class="player-btn" 
-                        hx-post="/carcassone-buddy/toggle_player" 
-                        hx-vals='{"player": "{{player}}"}' 
-                        hx-target="#score-display" 
-                        hx-swap="innerHTML">
-                        {{player}}
-                </button>
-        {% endfor %}
+    {% for player in players %}
+    <button
+        class="player-btn"
+        hx-post="/carcassone-buddy/toggle_player"
+        hx-vals='{"player": "{{player}}"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        {{player}}
+    </button>
+    {% endfor %}
 </div>
 
 <!-- Цифровая клавиатура -->
 <div class="keypad">
     <!-- Первая строка -->
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "1"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">1</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "2"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">2</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "3"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">3</button>
-    <button class="key-btn operator" 
-            hx-post="/carcassone-buddy/input_operator" 
-            hx-vals='{"operator": "+"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">+</button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "1"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        1
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "2"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        2
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "3"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        3
+    </button>
+    <button
+        class="key-btn operator"
+        hx-post="/carcassone-buddy/input_operator"
+        hx-vals='{"operator": "+"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        +
+    </button>
 
     <!-- Вторая строка -->
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "4"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">4</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "5"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">5</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "6"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">6</button>
-    <button class="key-btn operator" 
-            hx-post="/carcassone-buddy/input_operator" 
-            hx-vals='{"operator": "-"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">-</button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "4"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        4
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "5"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        5
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "6"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        6
+    </button>
+    <button
+        class="key-btn operator"
+        hx-post="/carcassone-buddy/input_operator"
+        hx-vals='{"operator": "-"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        -
+    </button>
 
     <!-- Третья строка -->
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "7"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">7</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "8"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">8</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "9"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">9</button>
-    <button class="key-btn enter" 
-            hx-post="/carcassone-buddy/calculate" 
-            hx-target="body" 
-            hx-swap="outerHTML">Enter</button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "7"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        7
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "8"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        8
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "9"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        9
+    </button>
+    <button
+        class="key-btn enter"
+        hx-post="/carcassone-buddy/calculate"
+        hx-target="body"
+        hx-swap="outerHTML"
+    >
+        Enter
+    </button>
 
     <!-- Четвертая строка -->
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "10"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">10</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "20"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">20</button>
-    <button class="key-btn number" 
-            hx-post="/carcassone-buddy/input_number" 
-            hx-vals='{"number": "30"}' 
-            hx-target="#score-display" 
-            hx-swap="innerHTML">30</button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "10"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        10
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "20"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        20
+    </button>
+    <button
+        class="key-btn number"
+        hx-post="/carcassone-buddy/input_number"
+        hx-vals='{"number": "30"}'
+        hx-target="#score-display"
+        hx-swap="innerHTML"
+    >
+        30
+    </button>
 </div>
 
 <!-- Панель истории -->
 <div class="history">
-        <strong>История:</strong>
-        {% if history %}
-                <ul>
-                {% for item in history|reverse() %}
-                <li>{{ item.player }}: {{item.old_score}} ({{item.formula}}) = {{item.new_score}}</li>
-                {% endfor %}
-                </ul>
-        {% endif %}
+    <strong>История:</strong>
+    {% if history %}
+    <ul>
+        {% for item in history|reverse() %}
+        <li>
+            {{ item.player }}: {{item.old_score}} ({{item.formula}}) =
+            {{item.new_score}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
-{% endblock %}
+
+{% if active_player %}
+<button
+    class="key-btn operator"
+    hx-post="/carcassone-buddy/clear"
+    hx-target="body"
+    hx-swap="outerHTML"
+>
+    Завершить игру
+</button>
+{% endif %} {% endblock %}

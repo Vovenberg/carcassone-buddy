@@ -1081,3 +1081,11 @@ select.form-control {
   color: var(--color-text);
   margin-top: var(--space-8);
 }
+
+#start-config-input {
+    width: 100%;
+    font-family: monospace;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}

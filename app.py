@@ -1,10 +1,10 @@
 
+
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 BASE_URL = "/carcassone-buddy"
-DEFAULT_PLAYERS = ['Люба', 'Вова']
 
 game_state = {
     'players': {},
@@ -17,13 +17,26 @@ game_state = {
 
 @app.route(f'{BASE_URL}', methods=['GET'])
 def index():
-    # "\"Главная страница с калькулятором\"\"\"
     return render_template('index.html',
                          players=game_state['players'],
                          active_player=game_state['active_player'],
                          current_formula=game_state['current_formula'],
                          history=game_state['history']
                          )
+
+@app.route(f'{BASE_URL}/start', methods=['POST'])
+def start():
+    players_str = request.form.get('players')
+    if players_str is None:
+        return 'Players not provided', 400
+    players = [player.strip() for player in players_str.split(sep=',')]
+    print(f'init players = {players}')
+    initPlayers(players)
+    return render_template('index.html',
+                         players=game_state['players'],
+                         active_player=game_state['active_player'],
+                         current_formula=game_state['current_formula'],
+                         history=game_state['history'])
 
 @app.route(f'{BASE_URL}/toggle_player', methods=['POST'])
 def toggle_player():
@@ -121,12 +134,16 @@ def calculate():
                          current_formula=game_state['current_formula'],
                          history=game_state['history'])
 
-@app.route(f'{BASE_URL}/clear', methods=['GET'])
+@app.route(f'{BASE_URL}/clear', methods=['POST'])
 def clear():
-    game_state['active_player'] = next(iter(game_state['players']))
-    game_state['history'] = []
-    for player in game_state['players']:
-        game_state['players'][player]['score'] = 0
+    game_state = {
+        'players': {},
+        'active_player': '',
+        'current_formula': '',
+        'current_operation': '',
+        'history': []
+    }
+    print(game_state)
     return render_template('index.html',
                         players=game_state['players'],
                         active_player=game_state['active_player'],
@@ -139,10 +156,8 @@ def initPlayers(players):
     game_state['active_player'] = players[0]
     for player in players:
         game_state['players'][player] = {'score': 0 }
+    game_state['history'] = []
     print(game_state)
-
-
-initPlayers(DEFAULT_PLAYERS)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
