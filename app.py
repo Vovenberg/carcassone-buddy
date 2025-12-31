@@ -170,12 +170,21 @@ def persist():
     db.insert(game_state)
 
 def get_all():
+    items = db.all()
+    print(f'items = {items}')
     return map(lambda x: {
-        'start_date': datetime.datetime.fromtimestamp(x['start_date'])
-        .astimezone(ZoneInfo("Europe/Samara"))
-        .strftime('%Y-%m-%d %H:%M'),
-        'players': x['players']
-    }, db.all())
+        'date': f'{format_date(x['start_date']).strftime('%Y-%m-%d %H:%M')} - {format_date(x['end_date']).strftime('%H:%M')}',
+        'players': ', '.join(format_players(index, data) for index, 
+            data in enumerate(sorted(x['players'].items(), key=lambda item: item[1]['score'], reverse=True)))
+    }, items)
+
+def format_players(index, player_data):
+    print(f'player_data = {player_data}')
+    print(f'index = {index}')
+    return f"{index == 0 and '🏆 ' or ''}{player_data[0]} - {player_data[1]['score']}"
+
+def format_date(timestamp):
+    return datetime.datetime.fromtimestamp(timestamp).astimezone(ZoneInfo("Europe/Samara"))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

@@ -216,7 +216,7 @@
     {% if game_history %}
     <ul>
         {% for item in game_history|reverse() %}
-        <li>{{ item.start_date }}: {{item.players}}</li>
+        <li>{{ item.date }}: {{item.players}}</li>
         {% endfor %}
     </ul>
     {% endif %}
